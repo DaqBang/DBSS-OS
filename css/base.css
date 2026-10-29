@@ -1,33 +1,75 @@
-/* base.css - token warna, reset, tipografi */
+/* base.css - token, reset, latar & permukaan liquid glass */
 
 :root {
   --c-primary: #2563eb;
   --c-primary-dark: #1d4ed8;
-  --c-primary-soft: #dbeafe;
+  --c-accent: #7c3aed;
+  --c-primary-soft: rgba(37, 99, 235, .16);
   --c-success: #16a34a;
   --c-warning: #d97706;
   --c-danger: #dc2626;
   --c-info: #0891b2;
 
-  --c-bg: #f1f5f9;
-  --c-surface: #ffffff;
-  --c-border: #e2e8f0;
   --c-text: #0f172a;
-  --c-muted: #64748b;
+  --c-muted: #475569;
+  --c-border: rgba(15, 23, 42, .08);
+  --c-hover: rgba(255, 255, 255, .5);
 
-  --c-sidebar: #0f172a;
-  --c-sidebar-text: #cbd5e1;
-  --c-sidebar-hover: #1e293b;
+  /* latar belakang (blob warna di belakang kaca) */
+  --bg-base: #e6ecfb;
+  --bg-blob-1: #93c5fd;
+  --bg-blob-2: #c4b5fd;
+  --bg-blob-3: #99f6e4;
 
-  --radius: 8px;
-  --shadow: 0 1px 3px rgba(15, 23, 42, .08);
-  --shadow-lg: 0 10px 30px rgba(15, 23, 42, .18);
+  /* liquid glass */
+  --glass-bg: rgba(255, 255, 255, .42);
+  --glass-bg-strong: rgba(255, 255, 255, .72);
+  --glass-border: rgba(255, 255, 255, .65);
+  --glass-blur: blur(22px) saturate(180%);
+  --glass-shine: inset 0 1px 0 rgba(255, 255, 255, .85), inset 0 -1px 0 rgba(255, 255, 255, .25);
+  --glass-light: rgba(255, 255, 255, .45);
 
-  --sidebar-w: 240px;
-  --sidebar-w-collapsed: 64px;
-  --topbar-h: 60px;
+  /* kedalaman (spatial) */
+  --depth-1: 0 1px 2px rgba(15, 23, 42, .05), 0 4px 12px rgba(15, 23, 42, .06);
+  --depth-2: 0 2px 4px rgba(15, 23, 42, .05), 0 12px 32px rgba(15, 23, 42, .10);
+  --depth-3: 0 8px 16px rgba(15, 23, 42, .08), 0 30px 60px rgba(15, 23, 42, .20);
 
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 22px;
+  --gap: 14px;
+
+  --sidebar-w: 248px;
+  --sidebar-w-collapsed: 72px;
+  --topbar-h: 64px;
+
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
   --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-text: #e2e8f0;
+    --c-muted: #94a3b8;
+    --c-border: rgba(255, 255, 255, .08);
+    --c-hover: rgba(255, 255, 255, .08);
+    --c-primary-soft: rgba(96, 165, 250, .18);
+
+    --bg-base: #0b1020;
+    --bg-blob-1: #1d4ed8;
+    --bg-blob-2: #6d28d9;
+    --bg-blob-3: #0f766e;
+
+    --glass-bg: rgba(30, 41, 59, .42);
+    --glass-bg-strong: rgba(30, 41, 59, .78);
+    --glass-border: rgba(255, 255, 255, .12);
+    --glass-shine: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 -1px 0 rgba(255, 255, 255, .04);
+    --glass-light: rgba(255, 255, 255, .10);
+
+    --depth-1: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 12px rgba(0, 0, 0, .25);
+    --depth-2: 0 2px 4px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+    --depth-3: 0 8px 16px rgba(0, 0, 0, .35), 0 30px 60px rgba(0, 0, 0, .5);
+  }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -40,10 +82,54 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: var(--c-text);
-  background: var(--c-bg);
+  background: var(--bg-base);
   -webkit-font-smoothing: antialiased;
 }
 
+/* blob warna bergerak perlahan di belakang semua panel kaca */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 20% 25%, var(--bg-blob-1), transparent 70%),
+    radial-gradient(35% 35% at 80% 20%, var(--bg-blob-2), transparent 70%),
+    radial-gradient(45% 45% at 60% 85%, var(--bg-blob-3), transparent 70%);
+  filter: blur(40px);
+  animation: bg-drift 30s ease-in-out infinite alternate;
+}
+@keyframes bg-drift {
+  to { transform: translate3d(4%, -3%, 0) rotate(8deg) scale(1.08); }
+}
+
+/* ---------- Permukaan kaca (dikongsi) ---------- */
+.glass, .sidebar, .topbar, .card, .modal, .toast {
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shine), var(--depth-2);
+}
+
+/* kilauan cahaya ikut kursor (--mx/--my diset oleh ui.js) */
+.glass::after, .sidebar::after, .topbar::after, .card::after, .modal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, -40%), var(--glass-light), transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.glass:hover::after, .sidebar:hover::after, .topbar:hover::after,
+.card:hover::after, .modal:hover::after { opacity: 1; }
+
+/* ---------- Tipografi ---------- */
 h1, h2, h3, h4 { margin: 0 0 .5em; line-height: 1.25; }
 h1 { font-size: 1.5rem; }
 h2 { font-size: 1.25rem; }
@@ -62,3 +148,11 @@ img { max-width: 100%; display: block; }
 .text-muted { color: var(--c-muted); }
 .text-right { text-align: right; }
 .hidden { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

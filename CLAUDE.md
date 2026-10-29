@@ -32,3 +32,10 @@ modules/<modul>/    index.js (menu & route) + satu fail per halaman
   report/           sales, finance, hr, audit
 assets/             img, icons
 ```
+
+## Konvensi
+
+- UI: liquid glass + spatial. Token dalam `css/base.css` (`:root`, ada dark mode). Panel kaca: `.glass/.card/.modal`. Kad condong 3D: `data-tilt`.
+- Halaman: `modules/<modul>/<halaman>.js` → `export default { title, render(el, route), destroy? }`. Fail tanpa export = "Dalam Pembinaan".
+- Data: `await db.all/find/where/insert/update/remove/count(koleksi)` dari `js/core/storage.js` (async, sedia untuk backend).
+- UI helper: `toast`, `modal`, `confirmDialog` dari `js/core/ui.js`.
