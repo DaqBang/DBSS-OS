@@ -13,3 +13,22 @@ nama-projek/
 ├── js/main.js
 └── assets/        # gambar, ikon, font
 ```
+
+## Projek: DBSS-OS (ERP)
+
+SPA hash router (`#/billing/invoice`), ES modules, data dalam localStorage (`js/core/storage.js`).
+Jalankan guna Live Server (ES modules tak jalan melalui `file://`).
+
+```
+index.html          shell: sidebar + topbar + #app
+login.html
+css/                base, layout, components
+js/app.js           mula app, daftar modul
+js/core/            router, storage, auth, utils, ui
+modules/<modul>/    index.js (menu & route) + satu fail per halaman
+  billing/          customer, invoice, quotation, payment
+  hr/               employee, attendance, leave, payroll
+  admin/            users, roles, company, settings
+  report/           sales, finance, hr, audit
+assets/             img, icons
+```
