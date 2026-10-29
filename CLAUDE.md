@@ -39,3 +39,7 @@ assets/             img, icons
 - Halaman: `modules/<modul>/<halaman>.js` → `export default { title, render(el, route), destroy? }`. Fail tanpa export = "Dalam Pembinaan".
 - Data: `await db.all/find/where/insert/update/remove/count(koleksi)` dari `js/core/storage.js` (async, sedia untuk backend).
 - UI helper: `toast`, `modal`, `confirmDialog` dari `js/core/ui.js`.
+- Responsif: desktop >1024 (sidebar penuh/rel), tablet 641-1024 (rel ikon + laci), mobile <=640 (laci + `.bottom-nav`, modal jadi bottom sheet).
+- Jadual: guna `table({ columns, rows })` dari `ui.js` (jadi senarai kad di mobile). Butang tindakan: kolum `className: 'cell-actions'` + `<div class="actions">`.
+- Listener halaman pasang pada `el` yang router beri (bekas baru setiap halaman).
+- PWA: `manifest.webmanifest` + ikon dalam `assets/icons/`. Service worker dibuat di peringkat akhir.

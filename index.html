@@ -2,16 +2,36 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DBSS-OS</title>
+
+  <!-- Web app (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DBSS-OS">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
+  <!-- Ikon (SVG sprite) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-billing" viewBox="0 0 24 24"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></symbol>
+    <symbol id="i-hr" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-5-6.7"/></symbol>
+    <symbol id="i-admin" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  </svg>
+
   <div class="app-shell">
 
-    <!-- Sidebar -->
+    <!-- Sidebar: penuh (desktop) / rel ikon (tablet) / laci (mobile) -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar__brand">
         <span class="brand__logo">DB</span>
@@ -19,10 +39,14 @@
       </div>
 
       <nav class="sidebar__nav">
-        <a href="#/dashboard" class="nav__link" data-route="dashboard">Dashboard</a>
+        <a href="#/dashboard" class="nav__link nav__link--top" data-route="dashboard" title="Dashboard">
+          <svg class="icon"><use href="#i-home"/></svg><span>Dashboard</span>
+        </a>
 
         <div class="nav__group" data-module="billing">
-          <button class="nav__group-title" type="button">Billing</button>
+          <button class="nav__group-title" type="button" title="Billing">
+            <svg class="icon"><use href="#i-billing"/></svg><span>Billing</span>
+          </button>
           <div class="nav__group-items">
             <a href="#/billing/customer" class="nav__link" data-route="billing/customer">Pelanggan</a>
             <a href="#/billing/quotation" class="nav__link" data-route="billing/quotation">Sebut Harga</a>
@@ -32,7 +56,9 @@
         </div>
 
         <div class="nav__group" data-module="hr">
-          <button class="nav__group-title" type="button">HR</button>
+          <button class="nav__group-title" type="button" title="HR">
+            <svg class="icon"><use href="#i-hr"/></svg><span>HR</span>
+          </button>
           <div class="nav__group-items">
             <a href="#/hr/employee" class="nav__link" data-route="hr/employee">Pekerja</a>
             <a href="#/hr/attendance" class="nav__link" data-route="hr/attendance">Kehadiran</a>
@@ -42,7 +68,9 @@
         </div>
 
         <div class="nav__group" data-module="admin">
-          <button class="nav__group-title" type="button">Admin</button>
+          <button class="nav__group-title" type="button" title="Admin">
+            <svg class="icon"><use href="#i-admin"/></svg><span>Admin</span>
+          </button>
           <div class="nav__group-items">
             <a href="#/admin/users" class="nav__link" data-route="admin/users">Pengguna</a>
             <a href="#/admin/roles" class="nav__link" data-route="admin/roles">Peranan</a>
@@ -52,7 +80,9 @@
         </div>
 
         <div class="nav__group" data-module="report">
-          <button class="nav__group-title" type="button">Report</button>
+          <button class="nav__group-title" type="button" title="Report">
+            <svg class="icon"><use href="#i-report"/></svg><span>Report</span>
+          </button>
           <div class="nav__group-items">
             <a href="#/report/sales" class="nav__link" data-route="report/sales">Jualan</a>
             <a href="#/report/finance" class="nav__link" data-route="report/finance">Kewangan</a>
@@ -76,7 +106,7 @@
           <div class="topbar__user">
             <span class="user__avatar" id="userAvatar">A</span>
             <span class="user__name" id="userName">Admin</span>
-            <button class="btn btn--ghost" id="logoutBtn" type="button">Log Keluar</button>
+            <button class="btn btn--ghost btn--sm" id="logoutBtn" type="button">Log Keluar</button>
           </div>
         </div>
       </header>
@@ -85,6 +115,25 @@
         <!-- Halaman dimuatkan oleh router ke sini -->
       </main>
     </div>
+
+    <!-- Navigasi bawah (mobile sahaja) -->
+    <nav class="bottom-nav" id="bottomNav">
+      <a href="#/dashboard" class="bottom-nav__item" data-module="dashboard">
+        <svg class="icon"><use href="#i-home"/></svg><span>Utama</span>
+      </a>
+      <button class="bottom-nav__item" type="button" data-module="billing">
+        <svg class="icon"><use href="#i-billing"/></svg><span>Billing</span>
+      </button>
+      <button class="bottom-nav__item" type="button" data-module="hr">
+        <svg class="icon"><use href="#i-hr"/></svg><span>HR</span>
+      </button>
+      <button class="bottom-nav__item" type="button" data-module="admin">
+        <svg class="icon"><use href="#i-admin"/></svg><span>Admin</span>
+      </button>
+      <button class="bottom-nav__item" type="button" data-module="report">
+        <svg class="icon"><use href="#i-report"/></svg><span>Report</span>
+      </button>
+    </nav>
 
   </div>
 

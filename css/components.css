@@ -83,7 +83,8 @@
 }
 .table tbody tr { transition: background .2s; }
 .table tbody tr:hover { background: var(--c-hover); }
-.table .actions { display: flex; gap: 6px; justify-content: flex-end; }
+.table .cell-actions { text-align: right; }
+.actions { display: inline-flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 
 /* ---------- Borang ---------- */
 .form-grid {
@@ -198,3 +199,105 @@ textarea.form-control { min-height: 90px; resize: vertical; }
 /* ---------- Toolbar (carian/penapis atas jadual) ---------- */
 .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .toolbar .form-control { width: auto; min-width: 200px; }
+
+/* ---------- Ringkasan kecil (cth: jumlah kutipan) ---------- */
+.summary { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 16px; }
+.summary b { font-size: 1.1rem; }
+
+/* ---------- Editor item dokumen (sebut harga / invois) ---------- */
+.doc-items { grid-column: 1 / -1; }
+.item-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 120px 110px 36px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.item-row--head { font-size: 12px; font-weight: 600; color: var(--c-muted); text-transform: uppercase; margin-bottom: 4px; }
+.item-row__total { text-align: right; font-weight: 600; }
+.item-row__remove {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--c-hover);
+  color: var(--c-danger);
+  font-size: 18px;
+}
+
+.totals {
+  grid-column: 1 / -1;
+  margin-left: auto;
+  width: min(100%, 320px);
+}
+.totals div { display: flex; justify-content: space-between; padding: 4px 0; }
+.totals .totals__grand { border-top: 1px solid var(--c-border); margin-top: 4px; padding-top: 8px; font-size: 1.1rem; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  .btn { min-height: 40px; }
+  .btn--sm { min-height: 34px; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 640px) {
+  /* elak iOS zoom bila fokus input */
+  .form-control, .topbar__search { font-size: 16px; }
+
+  .page-header h2 { font-size: 1.1rem; }
+  .page-header__actions { width: 100%; }
+  .page-header__actions .btn { flex: 1; }
+
+  .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat__value { font-size: 1.35rem; }
+  .card { padding: 16px; }
+
+  .toolbar .form-control { flex: 1 1 100%; min-width: 0; }
+
+  /* jadual -> senarai kad */
+  .table--stack thead { display: none; }
+  .table--stack, .table--stack tbody, .table--stack tr, .table--stack td { display: block; width: 100%; }
+  .table--stack tr { padding: 10px 0; border-bottom: 1px solid var(--c-border); }
+  .table--stack td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    border: 0;
+    white-space: normal;
+    text-align: right;
+  }
+  .table--stack td::before {
+    content: attr(data-label);
+    color: var(--c-muted);
+    font-size: 12px;
+    text-align: left;
+  }
+  .table--stack td.cell-actions { justify-content: flex-end; padding-top: 8px; }
+  .table--stack td.cell-actions::before { display: none; }
+
+  /* modal -> bottom sheet */
+  .modal-backdrop { align-items: end; padding: 0; }
+  .modal, .modal--lg {
+    max-width: 100%;
+    max-height: 92dvh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    animation: sheet-in .4s var(--ease-spring);
+  }
+  .modal__footer .btn { flex: 1; }
+  .form-grid { grid-template-columns: 1fr; }
+
+  /* item dokumen: perkara satu baris penuh */
+  .item-row { grid-template-columns: 1fr 1fr 1fr 36px; padding-bottom: 8px; border-bottom: 1px dashed var(--c-border); }
+  .item-row > :first-child { grid-column: 1 / -1; }
+  .item-row--head { display: none; }
+
+  .toast-root { left: 10px; right: 10px; bottom: calc(var(--bottom-nav-h) + 30px + env(safe-area-inset-bottom)); }
+  .toast { min-width: 0; }
+}
+@keyframes sheet-in { from { transform: translateY(100%); } }
+
+@media (hover: none) {
+  .btn:hover { transform: none; }
+}

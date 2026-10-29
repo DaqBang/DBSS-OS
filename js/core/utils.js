@@ -18,8 +18,10 @@ export function formatDate(value) {
   return isNaN(d) ? '-' : d.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-// Tarikh hari ini dalam format YYYY-MM-DD (untuk <input type="date">)
-export const today = () => new Date().toISOString().slice(0, 10);
+// Tarikh tempatan dalam format YYYY-MM-DD (untuk <input type="date">)
+const pad = (n) => String(n).padStart(2, '0');
+const isoDate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+export const today = () => isoDate(new Date());
 
 export function escapeHtml(str = '') {
   return String(str).replace(/[&<>"']/g, (c) => ({
@@ -34,3 +36,15 @@ export function debounce(fn, wait = 250) {
     t = setTimeout(() => fn(...args), wait);
   };
 }
+
+// Tambah hari pada tarikh YYYY-MM-DD
+export function addDays(date, days) {
+  const d = new Date(`${date}T00:00`);
+  d.setDate(d.getDate() + days);
+  return isoDate(d);
+}
+
+export const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
+
+// Borang -> objek { name: value }
+export const formToObject = (form) => Object.fromEntries(new FormData(form));

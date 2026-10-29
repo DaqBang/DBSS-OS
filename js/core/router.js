@@ -55,6 +55,7 @@ async function loadPage(route) {
 
 function updateNav(route) {
   qsa('.nav__link').forEach((a) => a.classList.toggle('active', a.dataset.route === route.key));
+  qsa('.bottom-nav__item').forEach((b) => b.classList.toggle('active', b.dataset.module === route.module));
   qs(`.nav__group[data-module="${route.module}"]`)?.classList.add('open');
   document.body.classList.remove('sidebar-open');
 }
@@ -78,11 +79,15 @@ async function render() {
   document.title = `${page.title} - DBSS-OS`;
   updateNav(route);
 
+  // bekas baru setiap halaman: listener halaman lama dibuang bersama elemennya
+  const view = document.createElement('div');
+  el.append(view);
+
   try {
-    await page.render(el, route);
+    await page.render(view, route);
   } catch (err) {
     console.error('[router]', err);
-    el.innerHTML = `<div class="card empty"><h2>Ralat</h2><p>${escapeHtml(err.message)}</p></div>`;
+    view.innerHTML = `<div class="card empty"><h2>Ralat</h2><p>${escapeHtml(err.message)}</p></div>`;
   }
 }
 

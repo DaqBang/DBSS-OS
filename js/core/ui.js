@@ -77,12 +77,31 @@ export function confirmDialog(message, { title = 'Pengesahan', okText = 'Ya', da
   });
 }
 
+// ---------- Jadual ----------
+// table({ columns: [{ label, render: (row) => html, className }], rows, empty })
+// render() mesti escape data sendiri. Di mobile jadual jadi senarai kad (data-label).
+export function table({ columns, rows, empty = 'Tiada rekod.' }) {
+  if (!rows.length) return `<div class="empty">${escapeHtml(empty)}</div>`;
+  const cls = (c) => (c.className ? ` class="${c.className}"` : '');
+  const head = columns.map((c) => `<th${cls(c)}>${escapeHtml(c.label)}</th>`).join('');
+  const body = rows.map((r) => `<tr>${columns.map((c) =>
+    `<td${cls(c)} data-label="${escapeHtml(c.label)}">${c.render(r)}</td>`).join('')}</tr>`).join('');
+  return `
+    <div class="table-wrap">
+      <table class="table table--stack"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>
+    </div>`;
+}
+
+export const badge = (text, type = '') => `<span class="badge ${type ? `badge--${type}` : ''}">${escapeHtml(text)}</span>`;
+
 // ---------- Kesan spatial ----------
 const GLASS = '.glass, .sidebar, .topbar, .card, .modal';
 const MAX_TILT = 6; // darjah
 
 export function initSpatial() {
+  // hanya untuk tetikus; skrin sentuh tiada hover
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   let tilted = null;
 
