@@ -9,9 +9,89 @@
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-  <aside id="sidebar"></aside>
-  <header id="topbar"></header>
-  <main id="app"></main>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <span class="brand__logo">DB</span>
+        <span class="brand__name">DBSS-OS</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="#/dashboard" class="nav__link" data-route="dashboard">Dashboard</a>
+
+        <div class="nav__group" data-module="billing">
+          <button class="nav__group-title" type="button">Billing</button>
+          <div class="nav__group-items">
+            <a href="#/billing/customer" class="nav__link" data-route="billing/customer">Pelanggan</a>
+            <a href="#/billing/quotation" class="nav__link" data-route="billing/quotation">Sebut Harga</a>
+            <a href="#/billing/invoice" class="nav__link" data-route="billing/invoice">Invois</a>
+            <a href="#/billing/payment" class="nav__link" data-route="billing/payment">Bayaran</a>
+          </div>
+        </div>
+
+        <div class="nav__group" data-module="hr">
+          <button class="nav__group-title" type="button">HR</button>
+          <div class="nav__group-items">
+            <a href="#/hr/employee" class="nav__link" data-route="hr/employee">Pekerja</a>
+            <a href="#/hr/attendance" class="nav__link" data-route="hr/attendance">Kehadiran</a>
+            <a href="#/hr/leave" class="nav__link" data-route="hr/leave">Cuti</a>
+            <a href="#/hr/payroll" class="nav__link" data-route="hr/payroll">Gaji</a>
+          </div>
+        </div>
+
+        <div class="nav__group" data-module="admin">
+          <button class="nav__group-title" type="button">Admin</button>
+          <div class="nav__group-items">
+            <a href="#/admin/users" class="nav__link" data-route="admin/users">Pengguna</a>
+            <a href="#/admin/roles" class="nav__link" data-route="admin/roles">Peranan</a>
+            <a href="#/admin/company" class="nav__link" data-route="admin/company">Syarikat</a>
+            <a href="#/admin/settings" class="nav__link" data-route="admin/settings">Tetapan</a>
+          </div>
+        </div>
+
+        <div class="nav__group" data-module="report">
+          <button class="nav__group-title" type="button">Report</button>
+          <div class="nav__group-items">
+            <a href="#/report/sales" class="nav__link" data-route="report/sales">Jualan</a>
+            <a href="#/report/finance" class="nav__link" data-route="report/finance">Kewangan</a>
+            <a href="#/report/hr" class="nav__link" data-route="report/hr">HR</a>
+            <a href="#/report/audit" class="nav__link" data-route="report/audit">Audit</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar__footer">v0.1.0</div>
+    </aside>
+
+    <!-- Kawasan utama -->
+    <div class="main">
+      <header class="topbar">
+        <button class="topbar__toggle" id="sidebarToggle" type="button" aria-label="Buka/tutup menu">&#9776;</button>
+        <h1 class="topbar__title" id="pageTitle">Dashboard</h1>
+
+        <div class="topbar__actions">
+          <input class="topbar__search" id="globalSearch" type="search" placeholder="Cari...">
+          <div class="topbar__user">
+            <span class="user__avatar" id="userAvatar">A</span>
+            <span class="user__name" id="userName">Admin</span>
+            <button class="btn btn--ghost" id="logoutBtn" type="button">Log Keluar</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="content" id="app">
+        <!-- Halaman dimuatkan oleh router ke sini -->
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Bekas global untuk modal & notifikasi -->
+  <div id="modalRoot"></div>
+  <div id="toastRoot" class="toast-root"></div>
+
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
